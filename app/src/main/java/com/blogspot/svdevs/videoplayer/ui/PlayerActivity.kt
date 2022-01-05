@@ -33,6 +33,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var runnable: Runnable
+    private var isSubtitle: Boolean = true
 
     companion object {
         lateinit var playerList: ArrayList<Video>
@@ -148,15 +149,16 @@ class PlayerActivity : AppCompatActivity() {
             val customDialog = LayoutInflater.from(this).inflate(R.layout.more_features,binding.root,false)
             val bindingMF = MoreFeaturesBinding.bind(customDialog)
             val dialog = MaterialAlertDialogBuilder(this).setView(customDialog)
-                .setOnCancelListener { playVideo() }
+                .setOnCancelListener { startPlayer() }
                 .setBackground(ColorDrawable(0x8003DAC5.toInt()))
                 .create()
 
             dialog.show()
 
+            // handling audio button
             bindingMF.audioBtn.setOnClickListener {
                 dialog.dismiss()
-                //playVideo()
+               startPlayer()
 
                 val audioTracks = ArrayList<String>()
                 for(i in 0 until player.currentTrackGroups.length) {
@@ -171,7 +173,7 @@ class PlayerActivity : AppCompatActivity() {
 
                 MaterialAlertDialogBuilder(this,R.style.alertDialog)
                     .setTitle("Select track")
-                    .setOnCancelListener { playVideo() }
+                    .setOnCancelListener { startPlayer() }
                     .setBackground(ColorDrawable(0x8003DAC5.toInt()))
                     .setItems(tempTrack){_,pos ->
                         showToast("${audioTracks[pos]} Selected")
@@ -180,10 +182,30 @@ class PlayerActivity : AppCompatActivity() {
                     .create()
                     .show()
             }
+
+            // handling subtitles button
+            bindingMF.subtitlesBtn.setOnClickListener {
+                if (isSubtitle) {
+                    // turining off the subtitles
+                    trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this).
+                    setRendererDisabled(C.TRACK_TYPE_VIDEO,true).build()
+                    isSubtitle = false
+                    showToast("Subtitles OFF")
+                }else {
+                    // turining on the subtitles
+                    trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this).
+                    setRendererDisabled(C.TRACK_TYPE_VIDEO,false).build()
+                    isSubtitle = true
+                    showToast("Subtitles ON")
+                }
+                dialog.dismiss()
+                startPlayer()
+            }
         }
 
     }
 
+    // Play the video in fullScreen mode
     private fun fullScreenMode(enabled: Boolean) {
         if(enabled) {
             binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
@@ -196,16 +218,19 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    // Resume playing the video
     private fun startPlayer() {
         binding.playBtn.setImageResource(R.drawable.pause)
         player.play()
     }
 
+    // Pause the video
     private fun pausePlayer() {
         binding.playBtn.setImageResource(R.drawable.play)
         player.pause()
     }
 
+    // Create the player and start playing the video
     private fun playVideo() {
         try {
             player.release()
