@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.ActivityPlayerBinding
+import com.blogspot.svdevs.videoplayer.databinding.BoosterLayoutBinding
 import com.blogspot.svdevs.videoplayer.databinding.MoreFeaturesBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersActivity
 import com.blogspot.svdevs.videoplayer.utils.showToast
@@ -199,6 +200,20 @@ class PlayerActivity : AppCompatActivity() {
                     showToast("Subtitles ON")
                 }
                 dialog.dismiss()
+                startPlayer()
+            }
+
+            //handling booster button functionality
+            bindingMF.boosterBtn.setOnClickListener {
+                dialog.dismiss()
+                val boosterDialog = LayoutInflater.from(this).inflate(R.layout.booster_layout,binding.root,false)
+                val bindingB = BoosterLayoutBinding.bind(boosterDialog)
+                val dialogBooster = MaterialAlertDialogBuilder(this).setView(boosterDialog)
+                    .setOnCancelListener { startPlayer() }
+                    .setBackground(ColorDrawable(0x8003DAC5.toInt()))
+                    .create()
+
+                dialogBooster.show()
                 startPlayer()
             }
         }
