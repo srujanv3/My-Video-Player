@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/teal_200">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/audioBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="Audio Track"
+            android:textAllCaps="false"
+            app:icon="@drawable/audio_track"
+            app:iconGravity="top" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/boosterBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="Booster"
+            android:textAllCaps="false"
+            app:icon="@drawable/booster"
+            app:iconGravity="top" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/subtitlesBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="Subtitles"
+            android:textAllCaps="false"
+            app:icon="@drawable/subtitles"
+            app:iconGravity="top" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/speedBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="Speed"
+            android:textAllCaps="false"
+            app:icon="@drawable/speed_track"
+            app:iconGravity="top" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sleepBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="Sleep Timer"
+            android:textAllCaps="false"
+            app:icon="@drawable/timer"
+            app:iconGravity="top" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pipBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="PIP Mode"
+            android:textAllCaps="false"
+            app:icon="@drawable/pip_icon"
+            app:iconGravity="top" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

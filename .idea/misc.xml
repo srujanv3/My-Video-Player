@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/back.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/header_bg.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/lock.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/more.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/pause.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/play.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/drawable/scrollbar.xml" value="0.19114583333333332" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/activity_folders.xml" value="0.17083333333333334" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/activity_main.xml" value="0.15260416666666668" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/activity_player.xml" value="0.17083333333333334" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/custom_control_view.xml" value="0.5" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/folder_item.xml" value="0.13148148148148148" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/fragment_folders.xml" value="0.17083333333333334" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/fragment_videos.xml" value="0.17083333333333334" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/more_features.xml" value="0.33" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/nav_header.xml" value="0.13148148148148148" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/layout/video_item.xml" value="0.25" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1675178753830439" />
+        <entry key="..\:/Apps/VideoPlayer/app/src/main/res/menu/nav_menu.xml" value="0.13148148148148148" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
