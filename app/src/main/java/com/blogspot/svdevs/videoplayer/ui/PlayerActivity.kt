@@ -1,9 +1,11 @@
 package com.blogspot.svdevs.videoplayer.ui
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -14,12 +16,14 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.ActivityPlayerBinding
+import com.blogspot.svdevs.videoplayer.databinding.MoreFeaturesBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersActivity
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -132,6 +136,19 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.nextBtn.setOnClickListener { nextOrPreviousVideo() }
         binding.prevBtn.setOnClickListener { nextOrPreviousVideo(false) }
+
+        binding.moreBtn.setOnClickListener {
+            pausePlayer()
+            // display the custom dialog
+            val customDialog = LayoutInflater.from(this).inflate(R.layout.more_features,binding.root,false)
+            val bindingMF = MoreFeaturesBinding.bind(customDialog)
+            val dialog = MaterialAlertDialogBuilder(this).setView(customDialog)
+                .setOnCancelListener { playVideo() }
+                .setBackground(ColorDrawable(0x8003DAC5.toInt()))
+                .create()
+
+            dialog.show()
+        }
 
     }
 
