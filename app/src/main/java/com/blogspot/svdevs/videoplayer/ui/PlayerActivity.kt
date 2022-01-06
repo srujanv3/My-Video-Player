@@ -1,6 +1,7 @@
 package com.blogspot.svdevs.videoplayer.ui
 
 import android.graphics.drawable.ColorDrawable
+import android.media.audiofx.LoudnessEnhancer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -44,6 +45,9 @@ class PlayerActivity : AppCompatActivity() {
         private var isFullScreen: Boolean = false
         private var isLocked:Boolean = false
         lateinit var trackSelector: DefaultTrackSelector
+
+        // for audio booster
+        private lateinit var audioEnhancer: LoudnessEnhancer
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -210,11 +214,24 @@ class PlayerActivity : AppCompatActivity() {
                 val bindingB = BoosterLayoutBinding.bind(boosterDialog)
                 val dialogBooster = MaterialAlertDialogBuilder(this).setView(boosterDialog)
                     .setOnCancelListener { startPlayer() }
+                    .setPositiveButton("OK") {self, _ ->
+                        audioEnhancer.setTargetGain(bindingB.verticalSeekBar.progress * 100)
+                        startPlayer()
+                        self.dismiss()
+                    }
                     .setBackground(ColorDrawable(0x8003DAC5.toInt()))
                     .create()
 
                 dialogBooster.show()
-                startPlayer()
+
+                // Amplifying the audio
+                bindingB.verticalSeekBar.progress = audioEnhancer.targetGain.toInt()/100
+                bindingB.pgText.text = "Audio Bost \n\n ${audioEnhancer.targetGain.toInt()/10} %"
+                bindingB.verticalSeekBar.setOnProgressChangeListener {
+                    bindingB.pgText.text = "Audio Bost \n\n ${it * 10} %"
+                }
+
+                //startPlayer()
             }
         }
 
@@ -237,6 +254,13 @@ class PlayerActivity : AppCompatActivity() {
     private fun startPlayer() {
         binding.playBtn.setImageResource(R.drawable.pause)
         player.play()
+
+        // for hiding the status bar and phone controls
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowInsetsControllerCompat(window,binding.root).let {
+            it.hide(WindowInsetsCompat.Type.systemBars())
+            it.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     // Pause the video
@@ -275,6 +299,8 @@ class PlayerActivity : AppCompatActivity() {
 
         fullScreenMode(enabled = isFullScreen)
         buttonsVisibility()
+        audioEnhancer = LoudnessEnhancer(player.audioSessionId)
+        audioEnhancer.enabled = true
     }
 
     private fun buttonsVisibility() {
