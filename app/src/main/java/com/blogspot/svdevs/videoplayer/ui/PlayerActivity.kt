@@ -19,6 +19,7 @@ import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.ActivityPlayerBinding
 import com.blogspot.svdevs.videoplayer.databinding.BoosterLayoutBinding
 import com.blogspot.svdevs.videoplayer.databinding.MoreFeaturesBinding
+import com.blogspot.svdevs.videoplayer.databinding.SpeedDialogBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersActivity
 import com.blogspot.svdevs.videoplayer.utils.showToast
 import com.google.android.exoplayer2.C
@@ -28,6 +29,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,6 +50,9 @@ class PlayerActivity : AppCompatActivity() {
 
         // for audio booster
         private lateinit var audioEnhancer: LoudnessEnhancer
+
+        // for playback speed
+        private var speed: Float = 1.0f
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -233,6 +238,33 @@ class PlayerActivity : AppCompatActivity() {
 
                 //startPlayer()
             }
+
+            // handling play back speed button
+            bindingMF.speedBtn.setOnClickListener {
+                startPlayer()
+                dialog.dismiss()
+                val speedDialog = LayoutInflater.from(this).inflate(R.layout.speed_dialog,binding.root,false)
+                val bindingS = SpeedDialogBinding.bind(speedDialog)
+                val dialogS = MaterialAlertDialogBuilder(this).setView(speedDialog)
+                    .setCancelable(false)
+                    .setPositiveButton("OK") {self, _ ->
+                        self.dismiss()
+                    }
+                    .setBackground(ColorDrawable(0x8003DAC5.toInt()))
+                    .create()
+
+                dialogS.show()
+
+                bindingS.speedText.text = "${DecimalFormat("#.##").format(speed)} X"
+                bindingS.minusBtn.setOnClickListener {
+                    changePlaybackSpeed(isIncrement = false)
+                    bindingS.speedText.text = "${DecimalFormat("#.##").format(speed)} X"
+                }
+                bindingS.plusBtn.setOnClickListener {
+                    changePlaybackSpeed(isIncrement = true)
+                    bindingS.speedText.text = "${DecimalFormat("#.##").format(speed)} X"
+                }
+            }
         }
 
     }
@@ -274,6 +306,9 @@ class PlayerActivity : AppCompatActivity() {
         try {
             player.release()
         }catch (e:Exception) {  }
+        // setup default playback speed
+        speed = 1.0f
+
         trackSelector = DefaultTrackSelector(this)
 
         binding.videoTitle.text = playerList[pos].title
@@ -357,6 +392,20 @@ class PlayerActivity : AppCompatActivity() {
                }
            }
        }
+    }
+
+    private fun changePlaybackSpeed(isIncrement: Boolean) {
+        if(isIncrement) {
+            if(speed <= 1.9f) {
+                speed += 0.10f
+            }
+        }else {
+            if(speed > 0.20f) {
+                speed -= 0.10f
+            }
+
+        }
+        player.setPlaybackSpeed(speed)
     }
 
     override fun onDestroy() {
