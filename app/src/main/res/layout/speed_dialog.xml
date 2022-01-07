@@ -16,7 +16,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/plus"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
 
@@ -29,10 +29,10 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/plusBtn"
-        app:layout_constraintEnd_toStartOf="@+id/minusBtn"
-        app:layout_constraintStart_toEndOf="@+id/plusBtn"
-        app:layout_constraintTop_toTopOf="@+id/plusBtn" />
+        app:layout_constraintBottom_toBottomOf="@+id/minusBtn"
+        app:layout_constraintEnd_toStartOf="@+id/plusBtn"
+        app:layout_constraintStart_toEndOf="@+id/minusBtn"
+        app:layout_constraintTop_toTopOf="@+id/minusBtn" />
 
     <ImageView
         android:id="@+id/minusBtn"
@@ -44,7 +44,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/minus"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
 

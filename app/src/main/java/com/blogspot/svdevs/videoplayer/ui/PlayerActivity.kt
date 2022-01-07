@@ -32,6 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.system.exitProcess
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -47,6 +48,9 @@ class PlayerActivity : AppCompatActivity() {
         private var isFullScreen: Boolean = false
         private var isLocked:Boolean = false
         lateinit var trackSelector: DefaultTrackSelector
+
+        //for sleep timer
+        private var timer: Timer? = null
 
         // for audio booster
         private lateinit var audioEnhancer: LoudnessEnhancer
@@ -81,6 +85,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
+    // checking if the video is playing from all videos or the folders activity
     private fun initializeLayout() {
 
         when (intent.getStringExtra("class")) {
@@ -265,6 +270,50 @@ class PlayerActivity : AppCompatActivity() {
                     bindingS.speedText.text = "${DecimalFormat("#.##").format(speed)} X"
                 }
             }
+
+            // handling sleep timer button
+            bindingMF.sleepBtn.setOnClickListener {
+                dialog.dismiss()
+                if(timer != null) {
+                    showToast("Timer already active")
+                }else {
+                    var sleepTime = 15
+                    val speedDialog = LayoutInflater.from(this).inflate(R.layout.speed_dialog,binding.root,false)
+                    val bindingS = SpeedDialogBinding.bind(speedDialog)
+                    val dialogS = MaterialAlertDialogBuilder(this).setView(speedDialog)
+                        .setCancelable(false)
+                        .setPositiveButton("OK") {self, _ ->
+                            timer = Timer()
+                            val task = object : TimerTask() {
+                                override fun run() {
+                                    moveTaskToBack(true) // prevents app from restarting again
+                                    exitProcess(1)
+                                }
+                            }
+                            timer!!.schedule(task,sleepTime*60*1000.toLong())
+                            self.dismiss()
+                            startPlayer()
+                        }
+                        .setBackground(ColorDrawable(0x8003DAC5.toInt()))
+                        .create()
+
+                    dialogS.show()
+
+                    bindingS.speedText.text = "$sleepTime min"
+                    bindingS.minusBtn.setOnClickListener {
+                        if(sleepTime > 15){
+                            sleepTime -= 15
+                        }
+                        bindingS.speedText.text ="$sleepTime min"
+                    }
+                    bindingS.plusBtn.setOnClickListener {
+                        if(sleepTime < 120) {
+                            sleepTime += 15
+                        }
+                        bindingS.speedText.text = "$sleepTime min"
+                    }
+                }
+            }
         }
 
     }
@@ -338,6 +387,7 @@ class PlayerActivity : AppCompatActivity() {
         audioEnhancer.enabled = true
     }
 
+    // hiding the control buttons when video is playing
     private fun buttonsVisibility() {
         runnable = Runnable {
             if(binding.playerView.isControllerVisible) {
@@ -351,6 +401,8 @@ class PlayerActivity : AppCompatActivity() {
         //Handler start time
         Handler(Looper.getMainLooper()).postDelayed(runnable,0)
     }
+
+    // lock button functionality
     private fun changeVisibility(visibility: Int) {
         binding.bottomController.visibility = visibility
         binding.topController.visibility = visibility
@@ -394,6 +446,7 @@ class PlayerActivity : AppCompatActivity() {
        }
     }
 
+    // playback speed functionality
     private fun changePlaybackSpeed(isIncrement: Boolean) {
         if(isIncrement) {
             if(speed <= 1.9f) {
