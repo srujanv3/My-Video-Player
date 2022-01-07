@@ -28,6 +28,7 @@ import com.blogspot.svdevs.videoplayer.databinding.BoosterLayoutBinding
 import com.blogspot.svdevs.videoplayer.databinding.MoreFeaturesBinding
 import com.blogspot.svdevs.videoplayer.databinding.SpeedDialogBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersActivity
+import com.blogspot.svdevs.videoplayer.utils.DoubleClickListener
 import com.blogspot.svdevs.videoplayer.utils.showToast
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
@@ -46,6 +47,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var runnable: Runnable
     private var isSubtitle: Boolean = true
+    private var doubleTapIconTime: Int = 0
 
     companion object {
         lateinit var playerList: ArrayList<Video>
@@ -91,6 +93,25 @@ class PlayerActivity : AppCompatActivity() {
         }
         initializeLayout()
         initBinding()
+
+        // double click events
+        binding.forwardFrame.setOnClickListener(DoubleClickListener(callback = object : DoubleClickListener.Callback{
+            override fun doubleClicked() {
+                binding.playerView.showController()
+                binding.forwardBtn.visibility = View.VISIBLE
+                player.seekTo(player.currentPosition + 10000)
+                doubleTapIconTime = 0
+            }
+        }))
+
+        binding.rewindFrame.setOnClickListener(DoubleClickListener(callback = object : DoubleClickListener.Callback{
+            override fun doubleClicked() {
+                binding.playerView.showController()
+                binding.rewindBtn.visibility = View.VISIBLE
+                player.seekTo(player.currentPosition - 10000)
+                doubleTapIconTime = 0
+            }
+        }))
 
     }
 
@@ -325,11 +346,12 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
 
-            //handling pip button
+            // handling pip button
             bindingMF.pipBtn.setOnClickListener {
                 // checking for pip permissions
                 val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
                 val status = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // permission granted
                     appOps.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, android.os.Process.myUid(), packageName) ==
                             AppOpsManager.MODE_ALLOWED
                 } else {
@@ -455,6 +477,15 @@ class PlayerActivity : AppCompatActivity() {
         }else {
             binding.lockBtn.visibility = visibility
         }
+
+        // displaying the doubletap buttons for bit longer time
+        if(doubleTapIconTime == 2) {
+            // == 2 will hide the icons after 2 iterations
+            binding.rewindBtn.visibility = View.GONE
+            binding.forwardBtn.visibility = View.GONE
+        } else {
+            doubleTapIconTime ++
+        }
     }
 
     // next and previous video switch functionality
@@ -507,7 +538,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
 
         if (pipStatus != 0) {
-            finish()
+            finish() // close previous pip mode
             val intent = Intent(this,PlayerActivity::class.java)
             when(pipStatus) {
                 1 -> intent.putExtra("class","FoldersActivity")
