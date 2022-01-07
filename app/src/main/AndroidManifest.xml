@@ -17,7 +17,11 @@
             android:name=".ui.PlayerActivity"
             android:exported="false"
             android:theme="@style/NoActionBar"
-            android:configChanges="uiMode|orientation|screenLayout|screenSize"/>
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:launchMode="singleTask"
+            android:configChanges="uiMode|orientation|screenLayout|screenSize|smallestScreenSize|keyboardHidden"
+            tools:targetApi="n" />
         <activity
             android:name=".ui.folder.FoldersActivity"
             android:exported="false"

@@ -1,7 +1,13 @@
 package com.blogspot.svdevs.videoplayer.ui
 
+import android.app.AppOpsManager
+import android.app.PictureInPictureParams
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
 import android.media.audiofx.LoudnessEnhancer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +17,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -57,6 +64,9 @@ class PlayerActivity : AppCompatActivity() {
 
         // for playback speed
         private var speed: Float = 1.0f
+
+        // for pip mode (play different video)
+        var pipStatus: Int = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -314,6 +324,38 @@ class PlayerActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            //handling pip button
+            bindingMF.pipBtn.setOnClickListener {
+                // checking for pip permissions
+                val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+                val status = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    appOps.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, android.os.Process.myUid(), packageName) ==
+                            AppOpsManager.MODE_ALLOWED
+                } else {
+                    false
+                }
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // if permissions granted...
+                    if (status) {
+                        this.enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                        dialog.dismiss()
+                        binding.playerView.hideController()
+                        startPlayer()
+                        pipStatus = 0
+                    }else {
+                        // requesting for the permissions
+                        val intent = Intent("android.settings.PICTURE_IN_PICTURE_SETTINGS",
+                            Uri.parse("package:$packageName"))
+                        startActivity(intent)
+                    }
+                }else {
+                    showToast("Feature not supported")
+                    dialog.dismiss()
+                    startPlayer()
+                }
+            }
         }
 
     }
@@ -459,6 +501,20 @@ class PlayerActivity : AppCompatActivity() {
 
         }
         player.setPlaybackSpeed(speed)
+    }
+
+    // playing new video when pip mode is already active
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
+
+        if (pipStatus != 0) {
+            finish()
+            val intent = Intent(this,PlayerActivity::class.java)
+            when(pipStatus) {
+                1 -> intent.putExtra("class","FoldersActivity")
+                2 -> intent.putExtra("class","AllVideos")
+            }
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {
