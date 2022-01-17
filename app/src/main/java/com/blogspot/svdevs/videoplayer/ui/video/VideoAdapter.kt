@@ -9,14 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.VideoItemBinding
+import com.blogspot.svdevs.videoplayer.ui.MainActivity
 import com.blogspot.svdevs.videoplayer.ui.PlayerActivity
 import com.blogspot.svdevs.videoplayer.ui.PlayerActivity.Companion.pipStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.exoplayer2.Player
 
-class VideoAdapter(private val context: Context, private val list: ArrayList<Video>,
-                   private val isFolder:Boolean = false) :
+class VideoAdapter(
+    private val context: Context, private var list: ArrayList<Video>,
+    private val isFolder: Boolean = false
+) :
     RecyclerView.Adapter<VideoAdapter.VideosViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideosViewHolder {
@@ -40,15 +43,20 @@ class VideoAdapter(private val context: Context, private val list: ArrayList<Vid
         ).into(holder.icon)
 
         holder.root.setOnClickListener {
-          when {
-              isFolder -> {
-                  pipStatus = 1
-                  sendIntent(position,"FoldersActivity")
-              }else -> {
-              pipStatus = 2
-                  sendIntent(position,"AllVideos")
-              }
-          }
+            when {
+                isFolder -> {
+                    pipStatus = 1
+                    sendIntent(position, "FoldersActivity")
+                }
+                MainActivity.search -> {
+                    pipStatus = 2
+                    sendIntent(position, "SearchVideos")
+                }
+                else -> {
+                    pipStatus = 3
+                    sendIntent(position, "AllVideos")
+                }
+            }
         }
     }
 
@@ -56,11 +64,18 @@ class VideoAdapter(private val context: Context, private val list: ArrayList<Vid
         return list.size
     }
 
-    private fun sendIntent(pos:Int, ref:String){
+    private fun sendIntent(pos: Int, ref: String) {
         PlayerActivity.pos = pos
-        val intent = Intent(context,PlayerActivity::class.java)
-        intent.putExtra("class",ref)
-        ContextCompat.startActivity(context,intent,null)
+        val intent = Intent(context, PlayerActivity::class.java)
+        intent.putExtra("class", ref)
+        ContextCompat.startActivity(context, intent, null)
+    }
+
+    // updating the video list when searching for videos
+    fun updateList(searchList: ArrayList<Video>) {
+        list = ArrayList()
+        list.addAll(searchList)
+        notifyDataSetChanged()
     }
 
     class VideosViewHolder(binding: VideoItemBinding) : RecyclerView.ViewHolder(binding.root) {

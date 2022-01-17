@@ -30,10 +30,7 @@ import com.blogspot.svdevs.videoplayer.databinding.SpeedDialogBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersActivity
 import com.blogspot.svdevs.videoplayer.utils.DoubleClickListener
 import com.blogspot.svdevs.videoplayer.utils.showToast
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -52,7 +49,7 @@ class PlayerActivity : AppCompatActivity() {
     companion object {
         lateinit var playerList: ArrayList<Video>
         var pos: Int = -1
-        private lateinit var player: SimpleExoPlayer
+        private lateinit var player: ExoPlayer
         var repeat: Boolean = false
         private var isFullScreen: Boolean = false
         private var isLocked:Boolean = false
@@ -130,6 +127,11 @@ class PlayerActivity : AppCompatActivity() {
                 playerList.addAll(FoldersActivity.folderVideoList)
                 playVideo()
             }
+            "SearchVideos" -> {
+                playerList = ArrayList()
+                playerList.addAll(MainActivity.searchList)
+                playVideo()
+            }
         }
     }
 
@@ -169,6 +171,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        //lock button functionality
         binding.lockBtn.setOnClickListener {
             if(!isLocked) {
                 isLocked = true
@@ -267,9 +270,9 @@ class PlayerActivity : AppCompatActivity() {
 
                 // Amplifying the audio
                 bindingB.verticalSeekBar.progress = audioEnhancer.targetGain.toInt()/100
-                bindingB.pgText.text = "Audio Bost \n\n ${audioEnhancer.targetGain.toInt()/10} %"
+                bindingB.pgText.text = "Audio Boost \n\n ${audioEnhancer.targetGain.toInt()/10} %"
                 bindingB.verticalSeekBar.setOnProgressChangeListener {
-                    bindingB.pgText.text = "Audio Bost \n\n ${it * 10} %"
+                    bindingB.pgText.text = "Audio Boost \n\n ${it * 10} %"
                 }
 
                 //startPlayer()
@@ -427,7 +430,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.videoTitle.text = playerList[pos].title
         binding.videoTitle.isSelected = true
 
-        player = SimpleExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
+        player = ExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
         binding.playerView.player = player
 
         val mediaItem = MediaItem.fromUri(playerList[pos].icon)
@@ -542,7 +545,8 @@ class PlayerActivity : AppCompatActivity() {
             val intent = Intent(this,PlayerActivity::class.java)
             when(pipStatus) {
                 1 -> intent.putExtra("class","FoldersActivity")
-                2 -> intent.putExtra("class","AllVideos")
+                2 -> intent.putExtra("class","SearchVideos")
+                3 -> intent.putExtra("class","AllVideos")
             }
             startActivity(intent)
         }

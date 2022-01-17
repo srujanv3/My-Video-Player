@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var videoList:ArrayList<Video>
         lateinit var folderList: ArrayList<Folder>
+        lateinit var searchList: ArrayList<Video>
+        var search:Boolean = false // check if is searching
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
