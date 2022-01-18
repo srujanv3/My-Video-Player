@@ -1,19 +1,23 @@
 package com.blogspot.svdevs.videoplayer.ui.video
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blogspot.svdevs.videoplayer.ui.MainActivity.Companion.videoList
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.databinding.FragmentVideosBinding
 import com.blogspot.svdevs.videoplayer.ui.MainActivity
+import com.blogspot.svdevs.videoplayer.ui.PlayerActivity
 
 class VideosFragment : Fragment() {
 
     private lateinit var adapter: VideoAdapter
+    private lateinit var binding: FragmentVideosBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,16 @@ class VideosFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_videos, container, false)
-        val binding = FragmentVideosBinding.bind(view)
+        binding = FragmentVideosBinding.bind(view)
+
+        // now playing button
+        binding.nowPlaying.setOnClickListener {
+            // send intent to player activity
+            val intent = Intent(requireContext(), PlayerActivity::class.java)
+            intent.putExtra("class", "NowPlaying")
+            startActivity(intent)
+
+        }
 
 
         binding.apply {
@@ -37,7 +50,7 @@ class VideosFragment : Fragment() {
             }
         }
         // initializing and assigning adapter
-        adapter = VideoAdapter(requireContext(),videoList)
+        adapter = VideoAdapter(requireContext(), videoList)
         binding.videoRecyclerView.adapter = adapter
 
         return view
@@ -46,7 +59,7 @@ class VideosFragment : Fragment() {
 
     // for search view
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu,menu)
+        inflater.inflate(R.menu.search_menu, menu)
         val searchView = menu.findItem(R.id.search)?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = true
@@ -67,5 +80,13 @@ class VideosFragment : Fragment() {
         })
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (PlayerActivity.pos != -1) {
+            // this means some video is being played
+            binding.nowPlaying.visibility = View.VISIBLE
+        }
     }
 }

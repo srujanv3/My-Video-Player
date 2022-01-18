@@ -44,6 +44,11 @@ class VideoAdapter(
 
         holder.root.setOnClickListener {
             when {
+                // handling the now playing video in videos list such that it resumes from previous stop
+                    list[position].id == PlayerActivity.nowPlayingID -> {
+                    sendIntent(position, "NowPlaying")
+                }
+
                 isFolder -> {
                     pipStatus = 1
                     sendIntent(position, "FoldersActivity")

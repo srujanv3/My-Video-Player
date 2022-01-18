@@ -66,6 +66,9 @@ class PlayerActivity : AppCompatActivity() {
 
         // for pip mode (play different video)
         var pipStatus: Int = 0
+
+        // for now playing video
+        var nowPlayingID: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,6 +134,16 @@ class PlayerActivity : AppCompatActivity() {
                 playerList = ArrayList()
                 playerList.addAll(MainActivity.searchList)
                 playVideo()
+            }
+            "NowPlaying" -> {
+                startPlayer()
+                speed = 1.0f
+                binding.videoTitle.text = playerList[pos].title
+                binding.videoTitle.isSelected = true
+                binding.playerView.player = player
+                fullScreenMode(enabled = isFullScreen)
+                buttonsVisibility()
+
             }
         }
     }
@@ -452,6 +465,7 @@ class PlayerActivity : AppCompatActivity() {
         buttonsVisibility()
         audioEnhancer = LoudnessEnhancer(player.audioSessionId)
         audioEnhancer.enabled = true
+        nowPlayingID = playerList[pos].id
     }
 
     // hiding the control buttons when video is playing
@@ -554,6 +568,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        player.pause()
     }
 }
