@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
@@ -16,10 +17,12 @@ import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.data.Folder
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.ActivityMainBinding
+import com.blogspot.svdevs.videoplayer.databinding.ThemeLayoutBinding
 import com.blogspot.svdevs.videoplayer.ui.folder.FoldersFragment
 import com.blogspot.svdevs.videoplayer.ui.video.VideosFragment
 import com.blogspot.svdevs.videoplayer.utils.Constants.REQUEST_CODE
 import com.blogspot.svdevs.videoplayer.utils.showToast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.lang.Exception
 
@@ -62,7 +65,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.themes -> showToast("Feedback")
+                R.id.themes -> {
+                    val customDialog = LayoutInflater.from(this).inflate(R.layout.theme_layout,binding.root,false)
+                    val bindingTL = ThemeLayoutBinding.bind(customDialog)
+                    val dialog = MaterialAlertDialogBuilder(this).setView(customDialog)
+                        .setTitle("Select Theme")
+                        .create()
+                    dialog.show()
+                }
                 R.id.share -> showToast("Share")
                 R.id.about -> startActivity(Intent(this,AboutActivity::class.java))
             }
