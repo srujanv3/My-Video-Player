@@ -3,16 +3,14 @@ package com.blogspot.svdevs.videoplayer.ui.video
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.blogspot.svdevs.videoplayer.ui.MainActivity.Companion.videoList
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity.Companion.videoList
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.databinding.FragmentVideosBinding
-import com.blogspot.svdevs.videoplayer.ui.MainActivity
-import com.blogspot.svdevs.videoplayer.ui.PlayerActivity
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity
+import com.blogspot.svdevs.videoplayer.ui.activities.PlayerActivity
 
 class VideosFragment : Fragment() {
 

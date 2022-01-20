@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.databinding.FragmentFoldersBinding
-import com.blogspot.svdevs.videoplayer.ui.MainActivity.Companion.folderList
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity.Companion.folderList
 
 class FoldersFragment : Fragment() {
 

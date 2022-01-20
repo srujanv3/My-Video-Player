@@ -9,8 +9,8 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.ActivityFoldersBinding
-import com.blogspot.svdevs.videoplayer.ui.MainActivity
-import com.blogspot.svdevs.videoplayer.ui.MainActivity.Companion.folderList
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity.Companion.folderList
 import com.blogspot.svdevs.videoplayer.ui.video.VideoAdapter
 import java.io.File
 import java.lang.Exception

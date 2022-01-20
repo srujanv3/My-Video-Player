@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".ui.PlayerActivity">
+    tools:context=".ui.activities.PlayerActivity">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"

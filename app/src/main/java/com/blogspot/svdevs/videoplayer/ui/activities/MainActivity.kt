@@ -1,9 +1,9 @@
-package com.blogspot.svdevs.videoplayer.ui
+package com.blogspot.svdevs.videoplayer.ui.activities
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.text.CaseMap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.feedback -> showToast("Feedback")
+                R.id.themes -> showToast("Feedback")
                 R.id.share -> showToast("Share")
-                R.id.about -> showToast("About")
+                R.id.about -> startActivity(Intent(this,AboutActivity::class.java))
             }
 
             return@setNavigationItemSelectedListener true

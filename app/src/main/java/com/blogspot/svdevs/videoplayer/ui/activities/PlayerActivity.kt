@@ -1,4 +1,4 @@
-package com.blogspot.svdevs.videoplayer.ui
+package com.blogspot.svdevs.videoplayer.ui.activities
 
 import android.app.AppOpsManager
 import android.app.PictureInPictureParams
@@ -17,7 +17,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -556,7 +555,7 @@ class PlayerActivity : AppCompatActivity() {
 
         if (pipStatus != 0) {
             finish() // close previous pip mode
-            val intent = Intent(this,PlayerActivity::class.java)
+            val intent = Intent(this, PlayerActivity::class.java)
             when(pipStatus) {
                 1 -> intent.putExtra("class","FoldersActivity")
                 2 -> intent.putExtra("class","SearchVideos")

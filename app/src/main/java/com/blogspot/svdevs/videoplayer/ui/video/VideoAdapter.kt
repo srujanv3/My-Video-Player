@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.svdevs.videoplayer.R
 import com.blogspot.svdevs.videoplayer.data.Video
 import com.blogspot.svdevs.videoplayer.databinding.VideoItemBinding
-import com.blogspot.svdevs.videoplayer.ui.MainActivity
-import com.blogspot.svdevs.videoplayer.ui.PlayerActivity
-import com.blogspot.svdevs.videoplayer.ui.PlayerActivity.Companion.pipStatus
+import com.blogspot.svdevs.videoplayer.ui.activities.MainActivity
+import com.blogspot.svdevs.videoplayer.ui.activities.PlayerActivity
+import com.blogspot.svdevs.videoplayer.ui.activities.PlayerActivity.Companion.pipStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.Player
 
 class VideoAdapter(
     private val context: Context, private var list: ArrayList<Video>,
