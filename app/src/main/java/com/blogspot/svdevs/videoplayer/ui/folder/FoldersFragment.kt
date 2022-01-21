@@ -20,6 +20,7 @@ class FoldersFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_folders, container, false)
         val binding = FragmentFoldersBinding.bind(view)
 
+        // temporary list (Ignore)
         val tempList = ArrayList<String>()
         tempList.add("Downloads")
         tempList.add("Pictures")
